@@ -13,10 +13,26 @@ function App() {
         setNotes((prevNotes)=>[...prevNotes, newNote])
     }
 
-    function handleDeleteNote(id){
+    const handleDeleteNote= (id)=>{
         // const filteredNotes = notes.filter(note => note.id !== id)
         // setNotes(filteredNotes)
         setNotes((filteredNotes) => filteredNotes.filter((n) => n.id !== id));
+    }
+
+    const handleCheckNote=(e)=>{
+        // const checkNote = notes.find(note=>note.id === id)
+        // checkNote.completed = !checkNote.completed
+
+        const noteId = Number(e.target.id)
+        // const newNotes= notes.map((note=>{
+        //     return note.id === noteId? {...note, completed:!note.completed}:note
+        // }))
+        // setNotes(newNotes)
+
+        setNotes((prevState)=>(
+            prevState.map((note)=>note.id === noteId?{...note , completed: !note.completed}:note)
+        ))
+
     }
 
   return (
@@ -24,7 +40,7 @@ function App() {
           <Header/>
           <div className="section">
               <AddNote onAddNote={handelAddNote}/>
-              <Notes notess={notes} onDelete={handleDeleteNote}/>
+              <Notes notess={notes} onDelete={handleDeleteNote} onChekd={handleCheckNote}/>
           </div>
       </>
 

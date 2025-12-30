@@ -105,6 +105,10 @@ select{
     gap: 1rem;
 }
 
+.cart__icon span , .cart__icon input{
+    cursor: pointer;
+}
+
 
 
 

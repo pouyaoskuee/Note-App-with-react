@@ -2,7 +2,7 @@ import {useState} from "react";
 
 
 
-function Notes({notess , onDelete}){
+function Notes({notess , onDelete ,onChekd}){
 
 
 
@@ -17,7 +17,7 @@ function Notes({notess , onDelete}){
             </div>
             <div className="notes__carts">
                 {notess.map((note) => (
-                    <NotesCard note={note} key={note.id} onDelete={onDelete} />
+                    <NotesCard note={note} key={note.id} onDelete={onDelete} onChekd={onChekd} />
                 ))}
             </div>
         </div>
@@ -30,7 +30,7 @@ export default Notes
 
 
 
-function NotesCard({note , onDelete}){
+function NotesCard({note , onDelete , onChekd}){
     const option ={
         year:'numeric',
         month:'long',
@@ -49,7 +49,7 @@ function NotesCard({note , onDelete}){
                 </div>
                 <div className="cart__icon">
                     <span onClick={()=>onDelete(note.id)} >🗑️</span>
-                    <input type="checkbox" />
+                    <input id={note.id} value={note.id} onChange={onChekd} type="checkbox" />
                 </div>
             </div>
             <div className='cart__date'>{new Date(note.created).toLocaleDateString('en-US', option)}</div>
