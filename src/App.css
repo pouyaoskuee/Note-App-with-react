@@ -109,6 +109,11 @@ select{
     cursor: pointer;
 }
 
+.cart__header:has(input:checked) .cart__description p{
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
 
 
 

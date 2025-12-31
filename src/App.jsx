@@ -7,6 +7,9 @@ import {useState} from "react";
 
 function App() {
     const [notes, setNotes] = useState([])
+    const [sortBy , setSortBy] = useState('oldest')
+
+    const onSort = (e) => setSortBy(e.target.value)
 
     const handelAddNote = (newNote) => {
 
@@ -33,14 +36,16 @@ function App() {
             prevState.map((note)=>note.id === noteId?{...note , completed: !note.completed}:note)
         ))
 
+
+
     }
 
   return (
       <>
-          <Header/>
+          <Header notes={notes} sortBy={sortBy} onSort={onSort} />
           <div className="section">
               <AddNote onAddNote={handelAddNote}/>
-              <Notes notess={notes} onDelete={handleDeleteNote} onChekd={handleCheckNote}/>
+              <Notes notess={notes} onDelete={handleDeleteNote} onChekd={handleCheckNote} sortNotes={sortBy}/>
           </div>
       </>
 

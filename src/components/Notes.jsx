@@ -1,22 +1,20 @@
-import {useState} from "react";
 
 
+function Notes({notess , onDelete ,onChekd , sortNotes}) {
 
-function Notes({notess , onDelete ,onChekd}){
-
+    let sortedNotes = []
+    if (sortNotes==='oldest')  sortedNotes= [...notess].sort((a,b) =>new Date( a.created) - new Date(b.created))
+    if (sortNotes==='newest') sortedNotes= [...notess].sort((a,b) =>new Date( b.created) - new Date(a.created))
+    if (sortNotes==='completed') sortedNotes= [...notess].sort((a,b) => Number(a.completed) - Number(b.completed))
+    console.log(sortedNotes)
+    console.log(sortNotes)
 
 
     return (
         <div className="notes">
-            <div className="notes__sort">
-                <ul>
-                    <li>all <span>3</span></li>
-                    <li>com <span>2</span></li>
-                    <li>uncom <span>1</span></li>
-                </ul>
-            </div>
+            <NoteSort notess={notess}/>
             <div className="notes__carts">
-                {notess.map((note) => (
+                {sortedNotes.map((note) => (
                     <NotesCard note={note} key={note.id} onDelete={onDelete} onChekd={onChekd} />
                 ))}
             </div>
@@ -38,8 +36,6 @@ function NotesCard({note , onDelete , onChekd}){
     }
 
 
-
-
     return (
         <div className="notes__cart">
             <div className='cart__header'>
@@ -49,10 +45,29 @@ function NotesCard({note , onDelete , onChekd}){
                 </div>
                 <div className="cart__icon">
                     <span onClick={()=>onDelete(note.id)} >🗑️</span>
-                    <input id={note.id} value={note.id} onChange={onChekd} type="checkbox" />
+                    <input checked={note.completed} id={note.id} value={note.id} onChange={onChekd} type="checkbox" />
                 </div>
             </div>
             <div className='cart__date'>{new Date(note.created).toLocaleDateString('en-US', option)}</div>
+        </div>
+    )
+}
+
+const NoteSort = ({notess}) => {
+
+    const AllNotes = notess.length
+    const CompletedNotes = notess.filter((note) => note.completed)
+    const UnCompletedNotes = notess.filter((note) => !note.completed)
+
+    if (!AllNotes) return <h2>you dont have any notes</h2>
+
+    return (
+        <div className="notes__sort">
+            <ul>
+                <li>all <span>{AllNotes}</span></li>
+                <li>com <span>{CompletedNotes.length}</span></li>
+                <li>uncom <span>{UnCompletedNotes.length}</span></li>
+            </ul>
         </div>
     )
 }
