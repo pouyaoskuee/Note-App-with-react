@@ -12,6 +12,7 @@ function Notes({notess , onDelete ,onChekd , sortNotes}) {
 
 
 
+
     return (
         <div className="notes">
             <NoteSort notess={notess}/>
