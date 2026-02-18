@@ -9,11 +9,7 @@ function AddNote({onAddNote}) {
         if (!title || !description) return null
         e.preventDefault();
         const newNote = {
-            title,
-            description,
-            id: new Date().getTime(),
-            completed: false,
-            created: new Date().toISOString()
+            title, description, id: new Date().getTime(), completed: false, created: new Date().toISOString()
         }
 
         onAddNote(newNote)
@@ -23,19 +19,16 @@ function AddNote({onAddNote}) {
     }
 
 
-
-
-
-    return (
-        <div className="addNote">
+    return (<div className="addNote">
             <h2>add new note</h2>
             <form className='addNote__form' onSubmit={handleAddNote}>
-                <input type="text" value={title} onChange={(e)=> setTitle(e.target.value)} placeholder="Add note title..." />
-                <input type="text"  value={description} onChange={(e)=> setDescription(e.target.value)} placeholder="Add note description..." />
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}
+                       placeholder="Add note title..."/>
+                <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}
+                       placeholder="Add note description..."/>
                 <button type="submit">Add new note</button>
             </form>
-        </div>
-    )
+        </div>)
 }
 
 

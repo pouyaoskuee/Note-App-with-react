@@ -3,23 +3,26 @@ import './App.css'
 import Header from './components/Header.jsx'
 import AddNote from './components/AddNote.jsx'
 import Notes from './components/Notes.jsx'
-import {useState} from "react";
+import {useReducer, useState} from "react";
 
 function App() {
-    const [notes, setNotes] = useState([])
+    // const [notes, setNotes] = useState([])
     const [sortBy , setSortBy] = useState('oldest')
+    const [notes , dispatch] = useReducer(countReducer , [])
 
     const onSort = (e) => setSortBy(e.target.value)
 
     const handelAddNote = (newNote) => {
 
-        setNotes((prevNotes)=>[...prevNotes, newNote])
+        // setNotes((prevNotes)=>[...prevNotes, newNote])
+        dispatch({type:'add' , payload:newNote})
     }
 
     const handleDeleteNote= (id)=>{
         // const filteredNotes = notes.filter(note => note.id !== id)
         // setNotes(filteredNotes)
-        setNotes((filteredNotes) => filteredNotes.filter((n) => n.id !== id));
+        // setNotes((filteredNotes) => filteredNotes.filter((n) => n.id !== id));
+        dispatch({type:'del' , payload:id})
     }
 
     const handleCheckNote=(e)=>{
@@ -32,12 +35,28 @@ function App() {
         // }))
         // setNotes(newNotes)
 
-        setNotes((prevState)=>(
-            prevState.map((note)=>note.id === noteId?{...note , completed: !note.completed}:note)
-        ))
+        // setNotes((prevState)=>(
+        //     prevState.map((note)=>note.id === noteId?{...note , completed: !note.completed}:note)
+        // ))
+
+        dispatch({type:'chek' , payload:noteId})
 
 
 
+    }
+
+
+    function countReducer(state, {type ,payload}) {
+        switch(type){
+            case 'add':
+                return [...state , payload];
+            case 'del':
+                return state.filter((s) => s.id !== payload)
+            case 'chek':
+                return state.map((s) => s.id === payload?{...s , completed: !s.completed}:s)
+            default:
+                throw new Error(`Not found ${type}`)
+        }
     }
 
   return (
