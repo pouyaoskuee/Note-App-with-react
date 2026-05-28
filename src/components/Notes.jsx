@@ -1,7 +1,14 @@
 import Message from "./Message.jsx";
+import {useNotes, useNotesDispatch} from "../context/NotesContext.jsx";
 
 
-function Notes({notess , onDelete ,onChekd , sortNotes}) {
+function Notes({sortNotes}) {
+    const notess = useNotes()
+    // const notess = [1,2]
+
+    // console.log(notess, 'notess')
+
+    if (!notess) return
 
     let sortedNotes = []
     if (sortNotes==='oldest')  sortedNotes= [...notess].sort((a,b) =>new Date( a.created) - new Date(b.created))
@@ -13,12 +20,13 @@ function Notes({notess , onDelete ,onChekd , sortNotes}) {
 
 
 
+
     return (
         <div className="notes">
             <NoteSort notess={notess}/>
             <div className="notes__carts">
                 {sortedNotes.map((note) => (
-                    <NotesCard note={note} key={note.id} onDelete={onDelete} onChekd={onChekd} />
+                    <NotesCard note={note} key={note.id} />
                 ))}
             </div>
         </div>
@@ -31,7 +39,9 @@ export default Notes
 
 
 
-function NotesCard({note , onDelete , onChekd}){
+function NotesCard({note}){
+    const dispatch = useNotesDispatch()
+
     const option ={
         year:'numeric',
         month:'long',
@@ -43,12 +53,15 @@ function NotesCard({note , onDelete , onChekd}){
         <div className="notes__cart">
             <div className='cart__header'>
                 <div className="cart__description">
-                    <p>{note.title}</p>
+                    <p className={'ham'}>{note.title}</p>
                     <p>{note.description}</p>
                 </div>
                 <div className="cart__icon">
-                    <span onClick={()=>onDelete(note.id)} >🗑️</span>
-                    <input checked={note.completed} id={note.id} value={note.id} onChange={onChekd} type="checkbox" />
+                    <span onClick={()=>dispatch({type:'del' , payload:note.id})} >🗑️</span>
+                    <input checked={note.completed} id={note.id} value={note.id} onChange={e=>{
+                        const noteId = Number(e.target.id)
+                        dispatch({type:'chek' , payload:noteId})
+                    }} type="checkbox" />
                 </div>
             </div>
             <div className='cart__date'>{new Date(note.created).toLocaleDateString('en-US', option)}</div>
@@ -57,6 +70,8 @@ function NotesCard({note , onDelete , onChekd}){
 }
 
 const NoteSort = ({notess}) => {
+
+    if(!notess)return
 
     const AllNotes = notess.length
     const CompletedNotes = notess.filter((note) => note.completed)

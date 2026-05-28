@@ -1,5 +1,8 @@
+import {useNotes} from "../context/NotesContext.jsx";
 
-function Header({notes , sortBy , onSort}) {
+function Header({ sortBy , onSort}) {
+    const notes = useNotes()
+    console.log(notes)
 
 
     return (
