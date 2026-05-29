@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import AddNote from "./AddNote.jsx";
-import Notes from "./Notes.jsx";
-import {NotesProvider} from "../context/NotesContext.jsx";
-import Header from "./Header.jsx";
+import AddNote from "./AddNote.js";
+import Notes from "./Notes.js";
+import Header from "./Header";
+import {SortNotes} from "../Types/SortNotes.ts";
 
 const NoteApp = () => {
 
-    const [sortBy , setSortBy] = useState('oldest')
-    const onSort = (e) => setSortBy(e.target.value)
+    const [sortBy , setSortBy] = useState<SortNotes>('oldest')
+    const onSort = (value:SortNotes) => setSortBy(value)
 
 
     return (

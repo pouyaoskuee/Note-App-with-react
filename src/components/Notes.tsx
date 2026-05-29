@@ -1,8 +1,13 @@
-import Message from "./Message.jsx";
-import {useNotes, useNotesDispatch} from "../context/NotesContext.jsx";
+ import Message from "./Message";
+import { useNotes, useNotesDispatch} from "../context/NotesContext";
+import {note} from "../Types/Note.ts";
+import React from "react";
+ import {SortNotes} from "../Types/SortNotes.ts";
 
 
-function Notes({sortNotes}) {
+
+
+function Notes({sortNotes}: { sortNotes:SortNotes }) {
     const notess = useNotes()
     // const notess = [1,2]
 
@@ -10,12 +15,10 @@ function Notes({sortNotes}) {
 
     if (!notess) return
 
-    let sortedNotes = []
-    if (sortNotes==='oldest')  sortedNotes= [...notess].sort((a,b) =>new Date( a.created) - new Date(b.created))
-    if (sortNotes==='newest') sortedNotes= [...notess].sort((a,b) =>new Date( b.created) - new Date(a.created))
+    let sortedNotes:note[] = []
+    if (sortNotes==='oldest')  sortedNotes= [...notess].sort((a,b) =>new Date( a.created).getTime() - new Date(b.created).getTime())
+    if (sortNotes==='newest') sortedNotes= [...notess].sort((a,b) =>new Date( b.created).getTime() - new Date(a.created).getTime())
     if (sortNotes==='completed') sortedNotes= [...notess].sort((a,b) => Number(a.completed) - Number(b.completed))
-    console.log(sortedNotes)
-    console.log(sortNotes)
 
 
 
@@ -39,10 +42,16 @@ export default Notes
 
 
 
-function NotesCard({note}){
+function NotesCard({note}:{note:note}) {
     const dispatch = useNotesDispatch()
 
-    const option ={
+    type option ={
+        year:'numeric'| '2-digit',
+        month:'numeric'| 'long',
+        day:'numeric'| '2-digit',
+    }
+
+    const option:option ={
         year:'numeric',
         month:'long',
         day:'numeric',
@@ -58,9 +67,9 @@ function NotesCard({note}){
                 </div>
                 <div className="cart__icon">
                     <span onClick={()=>dispatch({type:'del' , payload:note.id})} >🗑️</span>
-                    <input checked={note.completed} id={note.id} value={note.id} onChange={e=>{
+                    <input checked={note.completed} id={(note.id).toString()} value={note.id} onChange={e=>{
                         const noteId = Number(e.target.id)
-                        dispatch({type:'chek' , payload:noteId})
+                        dispatch({type:'check' , payload:noteId})
                     }} type="checkbox" />
                 </div>
             </div>
@@ -69,7 +78,7 @@ function NotesCard({note}){
     )
 }
 
-const NoteSort = ({notess}) => {
+const NoteSort = ({notess}:{notess:note[]}) => {
 
     if(!notess)return
 
@@ -88,8 +97,8 @@ const NoteSort = ({notess}) => {
         <div className="notes__sort">
             <ul>
                 <li>all <span>{AllNotes}</span></li>
-                <li>com <span>{CompletedNotes.length}</span></li>
-                <li>uncom <span>{UnCompletedNotes.length}</span></li>
+                <li>completed <span>{CompletedNotes.length}</span></li>
+                <li>Uncompleted <span>{UnCompletedNotes.length}</span></li>
             </ul>
         </div>
     )

@@ -1,6 +1,6 @@
 import './App.css'
- import NoteApp from "./components/NoteApp.jsx";
-import AppProvider from "./Providers/AppProvider.jsx";
+import NoteApp from "./components/NoteApp";
+import AppProvider from "./Providers/AppProvider";
 
 function App() {
     // const [notes, setNotes] = useState([])

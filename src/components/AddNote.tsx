@@ -1,5 +1,6 @@
-import {useState} from "react";
-import {useNotesDispatch} from "../context/NotesContext.jsx";
+import React, {useState} from "react";
+import {useNotesDispatch} from "../context/NotesContext.tsx";
+import {note} from "../Types/Note.ts";
 
 function AddNote() {
     const [title, setTitle] = useState('')
@@ -7,12 +8,16 @@ function AddNote() {
     const dispatch= useNotesDispatch()
 
 
-    const handleAddNote = (e) => {
+    const handleAddNote = (e: React.FormEvent<HTMLFormElement>) => {
 
         if (!title || !description) return null
         e.preventDefault();
-        const newNote = {
-            title, description, id: new Date().getTime(), completed: false, created: new Date().toISOString()
+        const newNote:note = {
+            title,
+            description,
+            id: new Date().getTime(),
+            completed: false,
+            created: new Date().toISOString()
         }
 
         dispatch({type:'add' , payload:newNote})
